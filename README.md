@@ -16,3 +16,6 @@
 > Classification Methods:
 >+ Losgistic Regression
 >+ Support Vector Mechine
+
+> Reference:
+>+ http://be.amazd.com/link-prediction/
