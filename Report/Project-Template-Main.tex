@@ -2,33 +2,38 @@
 
 \templatetype{pnasmathematics} 
 
-\title{Github Collaborator Recommendation Using }
+\usepackage{pdfpages}
+\usepackage{subfigure}
+
+\title{Machine Learning based Recommender System in Social Networks}
 
 % Authors should be listed in alphabetical order by last name. Use letters to indicate affiliations.
 \author[a]{Albert Jian} 
 \author[a]{Bill Wen}
-\author[a]{Shan Zhang}
+\author[a]{Shan Zhong}
 
 \affil[a]{University of California, Los Angeles}
 
 % Please give the surname of the lead author for the running footer
-\leadauthor{Zhang} 
+\leadauthor{Zhong} 
 
 % Please add a significance statement to explain the relevance of your work
-\significancestatement{Authors must submit a 120-word maximum statement about the significance of their research paper written at a level understandable to an undergraduate educated scientist outside their field of speciality. The primary goal of the significance statement is to explain the relevance of the work in broad context to a broad readership.}
+\significancestatement{Given a social network, how can you predict and recommend a likely future friendship between two users? Here, we design a recommender system based on machine learning with features to represent similarity with different properties each.}
 
 % Please include author contributions here.
 \authorcontributions{Please provide details of author contributions here.}
 
 % Please provide three to five keywords, separated by the pipe symbol. Keywords will signal the application, methods, etc. to the reader.
-\keywords{Keyword 1 $|$ Keyword 2 $|$ Keyword 3 $|$ ...} 
+\keywords{Machine Learning $|$ Recommender System $|$ Social Networks } 
 
 \begin{abstract}
-Please provide an abstract of no more than 250 words in a single paragraph. Abstracts should explain to the general reader the major contributions of the article. References in the abstract must be cited in full within the abstract itself and cited in the text.
+Recommender systems attempts to predict a user's rating on an item based on available data. In the context of social networks, recommender systems recommends a likely acquitance to a user. In this paper, we use similarity measures from network theory to develop features for machine learning to produce a recommender system. Using training and testing sets, we are able to demonstrate a system with accuracy.
 \end{abstract}
 
 \dates{This manuscript was compiled on \today}
 \doi{Math 168 Spring 2020 Final Project}
+
+\newcommand\boldred[1]{\textcolor{red}{\textbf{#1}}}
 
 \begin{document}
 
@@ -37,103 +42,98 @@ Please provide an abstract of no more than 250 words in a single paragraph. Abst
 \ifthenelse{\boolean{shortarticle}}{\ifthenelse{\boolean{singlecolumn}}{\abscontentformatted}{\abscontent}}{}
 
 % If your first paragraph (i.e. with the \dropcap) contains a list environment (quote, quotation, theorem, definition, enumerate, itemize...), the line after the list may have some extra indentation. If this is the case, add \parshape=0 to the end of the list environment.
-\dropcap{T}his PNAS journal template is provided to help you format your project correctly. Instructions for use are provided below. 
+\dropcap{R}ecommender systems is prevalently used in companies to give the best and personalized recommendations to users. In social networks, it can be 
 
-Note: please start your introduction without including the word ``Introduction'' as a section heading (except for math articles in the Physical Sciences section); this heading is implied in the first paragraphs. 
-
-\section*{Guide to using this template on Overleaf}
-
-Whether using this template on Overleaf or locally, make sure that you copy all of the files (.sty, .bst, .cls, etc.) so that the formatting will be maintained for your project. You should only need to edit this file (.tex), the bibliography (.bib), and add figures.
-
-If you have a question while using this template on Overleaf, you can use the help menu (``?'') on the top bar to search for \href{https://www.overleaf.com/help}{help and tutorials}. The instructor and TA are available to help with LaTeX-related questions and Piazza discussion on these topics is encouraged.
-
-\subsection*{Organizing your write-up}
-
-You should use sections to divide up your project into sections. Subsections like this one can be helpful to further organize your work. 
-
-\subsection*{Submitting Project}
-
-A PDF of the project should be submitted via Gradescope. Only one project needs to be submitted per group.
-
-\subsection*{Format}
-
-Many authors find it useful to organize their manuscripts with the following order of sections; title, author line and affiliations, keywords, abstract, significance statement, introduction, results, discussion, materials and methods, acknowledgments, and references. Other orders and headings are permitted.
-
-\subsection*{Manuscript Length}
-
-A standard 6-page article is approximately 4,000 words, 50 references, and 4 medium-size graphical elements (i.e., figures and tables). There is no page limit on the optional supplemental material.
-
-\subsection*{References}
-
-References should be cited in numerical order as they appear in text; this will be done automatically via bibtex, e.g. \cite{belkin2002using} and \cite{berard1994embedding,coifman2005geometric}. All references cited in the main text should be included in the main manuscript file.
+\section*{Dataset}
+The dataset GitHub Social Network is taken from SNAP. \cite{rozemberczki2019multiscale}. This dataset contains a large social network of GitHub developers, with each node representing a developer with at least 10 starred repositories and each edge indicating a mutual follower relationship.
+\subsection*{Data Analysis}
+\boldred{Some insight on how our network looks and behave}
 
 \begin{figure}%[tbhp]
-\centering
-\includegraphics[width=.8\linewidth]{Figures/frog.eps}
-\caption{Placeholder image of a frog with a long example legend to show justification setting.}
-\label{fig:frog}
+    \centering
+    \includegraphics[width=.8\linewidth]{Figures/subgraph.png}
+    \caption{Followers subgraph}
+    \label{fig:followers_subgraph}
 \end{figure}
 
+\begin{figure}%[tbhp]
+    \centering
+    \subfigure[Mutual follows for all users]{
+        \includegraphics[width=0.3\textwidth]{Figures/followers_overall.png}
+    }
+    \subfigure[Mutual follows for the least 30000 users]{
+        \includegraphics[width=0.3\textwidth]{Figures/followers_30000.png}
+    }
+    \subfigure[Mutual follows box plot]{
+        \includegraphics[width=0.3\textwidth]{Figures/followers_boxplot.png}
+    }
+    \caption{Mutual follows per user}
+    \label{fig:followers}
+\end{figure}
 
-\begin{SCfigure*}[\sidecaptionrelwidth][t]
-\centering
-\includegraphics[width=11.4cm,height=11.4cm]{Figures/frog.eps}
-\caption{This legend would be placed at the side of the figure, rather than below it.}\label{fig:side}
-\end{SCfigure*}
+\begin{figure}%[tbhp]
+    \centering
+    \includegraphics[width=.8\linewidth]{Figures/followers_pdf.png}
+    \caption{Followers pdf}
+    \label{fig:followers_pdf}
+\end{figure}
 
-\subsection*{Digital Figures}
+\section*{Methods}
+We use machine learning with features from similarity measures and other weighted measures\cite{6033365}.
 
-Make sure that your figures are of high enough resolution to show up nicely in the document. EPS and high-resolution PDF are usually best, but representations in JPG and PNG can also be used.
+\subsection*{Features}
 
- Numbers, letters, and symbols in figures should be large enough to be easily readable within the document. This includes axis labels.
+\subsubsection*{Jaccard's Coefficient}
+\subsubsection*{Preferential Attachment}
+\cite{sadraei}
+\section*{Results}
+The results are quite convincing, as indicated in the confusion matrices \ref{fig:pa_train_confusion_matrix},\ref{fig:pa_test_confusion_matrix},\ref{fig:pa_roc_curve}
 
-Figures and tables should be labelled and referenced in the standard way using the \verb|\label{}| and \verb|\ref{}| commands.
 
-Figure \ref{fig:frog} shows an example of how to insert a column-wide figure. To insert a figure wider than one column, please use the \verb|\begin{figure*}...\end{figure*}| environment. Figures wider than one column should be sized to 11.4 cm or 17.8 cm wide. Use \verb|\begin{SCfigure*}...\end{SCfigure*}| for a wide figure with side legends.
 
-\subsection*{Tables}
-Tables can be included in the main manuscript file, if desired.
+\begin{figure}%[tbhp]
+    \centering
+    \includegraphics[width=.8\linewidth]{Figures/mt_depth_score.png}
+    \caption{Placeholder image of a frog with a long example legend to show justification setting.}
+    \label{fig:mt_depth_score}
+\end{figure}
 
-\subsection*{Single column equations}
+\begin{figure}%[tbhp]
+    \centering
+    \includegraphics[width=.8\linewidth]{Figures/mt_estimator_score.png}
+    \caption{Placeholder image of a frog with a long example legend to show justification setting.}
+    \label{fig:mt_estimator_score}
+\end{figure}
 
-Here is an equation with equation numbering:
-\begin{equation}
-    (x+y)^3=(x+y)(x+y)^2,
-    \label{eqn:myequation}
-\end{equation}
-and here is a multi-line equation where only one equation is numbered:
-\begin{align*}
-(x+y)^3&=(x+y)(x+y)^2\\
-       &=(x+y)(x^2+2xy+y^2) \numberthis \label{eqn:example} \\
-       &=x^3+3x^2y+3xy^3+x^3. 
-\end{align*}
+\begin{figure}%[tbhp]
+    \centering
+    \includegraphics[width=.8\linewidth]{Figures/pa_train_confusion_matrix.png}
+    \caption{Placeholder image of a frog with a long example legend to show justification setting.}
+    \label{fig:pa_train_confusion_matrix}
+\end{figure}
 
-Please refer to your equations (e.g., \eqref{eqn:myequation} and \eqref{eqn:example}).
+\begin{figure}%[tbhp]
+    \centering
+    \includegraphics[width=.8\linewidth]{Figures/pa_test_confusion_matrix.png}
+    \caption{Placeholder image of a frog with a long example legend to show justification setting.}
+    \label{fig:pa_test_confusion_matrix}
+\end{figure}
 
-\begin{table}%[tbhp]
-\centering
-\caption{Comparison of the fitted potential energy surfaces and ab initio benchmark electronic energy calculations}
-\begin{tabular}{lrrr}
-Species & CBS & CV & G3 \\
-\midrule
-1. Acetaldehyde & 0.0 & 0.0 & 0.0 \\
-2. Vinyl alcohol & 9.1 & 9.6 & 13.5 \\
-3. Hydroxyethylidene & 50.8 & 51.2 & 54.0\\
-\bottomrule
-\end{tabular}
+\begin{figure}%[tbhp]
+    \centering
+    \includegraphics[width=.8\linewidth]{Figures/pa_feature_importance.png}
+    \caption{Placeholder image of a frog with a long example legend to show justification setting.}
+    \label{fig:pa_feature_importance}
+\end{figure}
 
-\addtabletext{nomenclature for the TSs refers to the numbered species in the table.}
-\end{table}
+\begin{figure}%[tbhp]
+    \centering
+    \includegraphics[width=.8\linewidth]{Figures/pa_roc_curve.png}
+    \caption{Placeholder image of a frog with a long example legend to show justification setting.}
+    \label{fig:pa_roc_curve}
+\end{figure}
 
-\subsection*{Supporting Information Appendix (SI)}
-
-Authors may submit SI as a single separate SI Appendix PDF file, with combined text, figures, tables, and SI references. This does not have to follow any special formatting (e.g., you can use the standard LaTeX article class).
-
-Authors who place detailed materials and methods in an SI Appendix must provide sufficient detail in the main text methods to enable a reader to follow the logic of the procedures and results and also must reference the SI methods. 
-
-\subsubsection*{SI Datasets} 
-
-Supply .xlsx, .csv, .txt, .rtf, or .pdf files. 
+\section*{Supporting Information}
 
 \acknow{If you wish, you can include any acknowledgments here, set in a single paragraph.}
 
@@ -141,5 +141,19 @@ Supply .xlsx, .csv, .txt, .rtf, or .pdf files.
 
 % Bibliography
 \bibliography{References}
+
+\clearpage
+\includepdf[
+    %% Include all pages of the PDF
+    pages=-,
+    %% make this page have the usual page style
+    %% (you can change it to plain etc). By default pdfpages
+    %% sets the pagecommand to \pagestyle{empty}
+    pagecommand={\pagestyle{headings}},  
+    %% Add a "section" entry to the ToC with the heading
+    %% "Quilling Shapes" and the label "sec:shapes"
+    addtotoc={1,section,1,Quilling Shapes,sec:shapes}]
+%% The pdf file itself
+{Math168_Final_Project.pdf}
 
 \end{document}

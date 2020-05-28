@@ -14,7 +14,7 @@
 >+ preferential attachment
 
 > Classification Methods:
->+ Losgistic Regression
+>+ Logistic Regression
 >+ Support Vector Mechine
 
 > Reference:
