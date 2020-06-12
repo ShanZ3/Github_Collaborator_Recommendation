@@ -2,10 +2,9 @@
 
 \templatetype{pnasmathematics} 
 
-\usepackage{pdfpages}
 \usepackage{subfigure}
 
-\title{Machine Learning based Recommender System in Social Networks}
+\title{Github Collaborator Recommendation}
 
 % Authors should be listed in alphabetical order by last name. Use letters to indicate affiliations.
 \author[a]{Albert Jian} 
@@ -15,25 +14,23 @@
 \affil[a]{University of California, Los Angeles}
 
 % Please give the surname of the lead author for the running footer
-\leadauthor{Zhong} 
+\leadauthor{Zhong, Jian, Wen} 
 
 % Please add a significance statement to explain the relevance of your work
-\significancestatement{Given a social network, how can you predict and recommend a likely future friendship between two users? Here, we design a recommender system based on machine learning with features to represent similarity with different properties each.}
+\significancestatement{Recommender system in social network aims to predict the most probable hidden friendship within the network and recommend it to the users. In this paper, we use network theory feature to develop machine learning model for a recommender system and analyzes the importance of different features within the model.}
 
 % Please include author contributions here.
-\authorcontributions{Please provide details of author contributions here.}
+\authorcontributions{}
 
 % Please provide three to five keywords, separated by the pipe symbol. Keywords will signal the application, methods, etc. to the reader.
 \keywords{Machine Learning $|$ Recommender System $|$ Social Networks } 
 
 \begin{abstract}
-Recommender systems attempts to predict a user's rating on an item based on available data. In the context of social networks, recommender systems recommends a likely acquitance to a user. In this paper, we use similarity measures from network theory to develop features for machine learning to produce a recommender system. Using training and testing sets, we are able to demonstrate a system with accuracy.
+Recommender systems in the context of social networks recommends a likely acquaintance to a user. In this paper, we use concepts from network theory to develop features for machine learning to produce a recommender system to suggest GitHub followees to users. Using training and testing sets, we are able to demonstrate highly accurate recommender system using machine learning models. From the result, we found that the most important features are personalized PageRank scores, and how similar is the suggested followee to the current user's followees.
 \end{abstract}
 
 \dates{This manuscript was compiled on \today}
 \doi{Math 168 Spring 2020 Final Project}
-
-\newcommand\boldred[1]{\textcolor{red}{\textbf{#1}}}
 
 \begin{document}
 
@@ -42,118 +39,70 @@ Recommender systems attempts to predict a user's rating on an item based on avai
 \ifthenelse{\boolean{shortarticle}}{\ifthenelse{\boolean{singlecolumn}}{\abscontentformatted}{\abscontent}}{}
 
 % If your first paragraph (i.e. with the \dropcap) contains a list environment (quote, quotation, theorem, definition, enumerate, itemize...), the line after the list may have some extra indentation. If this is the case, add \parshape=0 to the end of the list environment.
-\dropcap{R}ecommender systems is prevalently used in companies to give the best and personalized recommendations to users. In social networks, it can be 
+\dropcap{D}uring the recent rise of web services, many companies utilize different version of recommender system to recommend personalized items to their users, including Google's infamous YouTube algorithm. In social networks, recommender system recommend the more probable connections to the user. 
 
-\section*{Dataset}
-The dataset GitHub Social Network is taken from SNAP. \cite{rozemberczki2019multiscale}. This dataset contains a large social network of GitHub developers, with each node representing a developer with at least 10 starred repositories and each edge indicating a mutual follower relationship.
-\subsection*{Data Analysis}
-\boldred{Some insight on how our network looks and behave}
+In this paper we produce a recommendation system for a GitHub social network using machine learning approaches. We will first analyze our results and discuss their relevance, then we will describe the dataset and concepts from network theory and machine learning we used to develop the recommender system.
 
-\begin{figure}%[tbhp]
+\section*{Results}
+
+\begin{table}[th]
     \centering
-    \includegraphics[width=.8\linewidth]{Figures/subgraph.png}
-    \caption{Followers subgraph}
-    \label{fig:followers_subgraph}
-\end{figure}
+    \caption{Model Hyperparameters and Training and Testing F\textsubscript{1} Score}
+    \begin{tabular}{lrrr}
+    Model & Hyperparameters(max\_depth, n\_estimators) & Train F\textsubscript{1} & Test F\textsubscript{1} \\
+    \midrule
+    Random Forest & (14, 121) & 0.96 & 0.92 \\
+    Gradient Boosting Decision Tree & (10, 200) & 0.99 & 0.99 \\
+    \bottomrule
+    \end{tabular}
+\end{table}   
 
-\begin{figure}%[tbhp]
+\section*{Discussion}
+
+\section*{Materials}
+\subsection*{Dataset}
+The dataset GitHub Social Network is taken from SNAP \cite{rozemberczki2019multiscale}. This dataset contains a large social network of GitHub developers collected from the public API in June 2019. Nodes are developers who have starred at least 10 repositories and edges are mutual follower relationships between them. The dataset consists of 37700 nodes and 289003 edges.
+\subsection*{Exploratory Data Analysis}
+The degree distribution of the network is shown in figure \ref{fig:follows}. The largest number of mutual follows is 9458 and the minimum number is 1. 5045 users in the network have 1 mutual follow and around 25000 people have less than 5 mutual follows. As seen from both of the graphs, the degree distribution is quite left-skewed. 
+
+In order to visualize the network, we picked a central node from the training set and we performed a breadth-first walk of the group to a maximum distance of 3 as shown in figure \ref{fig:localnetwork}. Nodes are sized according to their distance from the center and colored by their personalized PageRank with the central node.
+
+\begin{figure}[th]
     \centering
-    \subfigure[Mutual follows for all users]{
-        \includegraphics[width=0.3\textwidth]{Figures/followers_overall.png}
-    }
     \subfigure[Mutual follows for the least 30000 users]{
-        \includegraphics[width=0.3\textwidth]{Figures/followers_30000.png}
+        \includegraphics[width=0.4\textwidth]{Figures/followers_30000.png}
     }
     \subfigure[Mutual follows box plot]{
-        \includegraphics[width=0.3\textwidth]{Figures/followers_boxplot.png}
+        \includegraphics[width=0.4\textwidth]{Figures/followers_boxplot.png}
     }
     \caption{Mutual follows per user}
-    \label{fig:followers}
+    \label{fig:follows}
 \end{figure}
 
-\begin{figure}%[tbhp]
+\begin{figure}[ht]
     \centering
-    \includegraphics[width=.8\linewidth]{Figures/followers_pdf.png}
-    \caption{Followers pdf}
-    \label{fig:followers_pdf}
+    \includegraphics[width=0.5\textwidth]{Figures/local_network_example.png}
+    \caption{Example Local Network with Distance of 3}
+    \label{fig:localnetwork}
 \end{figure}
+
 
 \section*{Methods}
-We use machine learning with features from similarity measures and other weighted measures\cite{6033365}.
-
-\subsection*{Features}
+The methods in this paper is mostly inspired by this research in link prediction in social networks \cite{6033365}. Binary classification method (Random Forest, Support Vector Machine and Gradient Boosting) was adopted to classify good links and bad links. SVD was applied to reduce the dimension of the dataset. Similarity measures such as jaccard distance, cosine distance and preferential attachment were calculated as features. Ranking measures (page rank), centrality measures (Katz centrality) and other metrics such as shortest path and common neighbors were also added for model training. Confusion matrix was plotted at the end to evaluate model performance. We trained for two separate models, one with Random Forest, RF, and one with Gradient Boosting Decision Tree, GBDT. 
+\subsection*{Features}\cite{sadraei}
 
 \subsubsection*{Jaccard's Coefficient}
+
 \subsubsection*{Preferential Attachment}
-\cite{sadraei}
-\section*{Results}
-The results are quite convincing, as indicated in the confusion matrices \ref{fig:pa_train_confusion_matrix},\ref{fig:pa_test_confusion_matrix},\ref{fig:pa_roc_curve}
+
+\subsection*{Machine Learning Models}
 
 
-
-\begin{figure}%[tbhp]
-    \centering
-    \includegraphics[width=.8\linewidth]{Figures/mt_depth_score.png}
-    \caption{Placeholder image of a frog with a long example legend to show justification setting.}
-    \label{fig:mt_depth_score}
-\end{figure}
-
-\begin{figure}%[tbhp]
-    \centering
-    \includegraphics[width=.8\linewidth]{Figures/mt_estimator_score.png}
-    \caption{Placeholder image of a frog with a long example legend to show justification setting.}
-    \label{fig:mt_estimator_score}
-\end{figure}
-
-\begin{figure}%[tbhp]
-    \centering
-    \includegraphics[width=.8\linewidth]{Figures/pa_train_confusion_matrix.png}
-    \caption{Placeholder image of a frog with a long example legend to show justification setting.}
-    \label{fig:pa_train_confusion_matrix}
-\end{figure}
-
-\begin{figure}%[tbhp]
-    \centering
-    \includegraphics[width=.8\linewidth]{Figures/pa_test_confusion_matrix.png}
-    \caption{Placeholder image of a frog with a long example legend to show justification setting.}
-    \label{fig:pa_test_confusion_matrix}
-\end{figure}
-
-\begin{figure}%[tbhp]
-    \centering
-    \includegraphics[width=.8\linewidth]{Figures/pa_feature_importance.png}
-    \caption{Placeholder image of a frog with a long example legend to show justification setting.}
-    \label{fig:pa_feature_importance}
-\end{figure}
-
-\begin{figure}%[tbhp]
-    \centering
-    \includegraphics[width=.8\linewidth]{Figures/pa_roc_curve.png}
-    \caption{Placeholder image of a frog with a long example legend to show justification setting.}
-    \label{fig:pa_roc_curve}
-\end{figure}
-
-\section*{Supporting Information}
-
-\acknow{If you wish, you can include any acknowledgments here, set in a single paragraph.}
+\acknow{We would like to acknowledge our professor Dr. Heather Zinn-Brooks and our teaching assistant Abigail Hickok for their accomodations during the remote instructions this quarter.}
 
 \showacknow % Display the acknowledgements section
 
 % Bibliography
 \bibliography{References}
-
-\clearpage
-\includepdf[
-    %% Include all pages of the PDF
-    pages=-,
-    %% make this page have the usual page style
-    %% (you can change it to plain etc). By default pdfpages
-    %% sets the pagecommand to \pagestyle{empty}
-    pagecommand={\pagestyle{headings}},  
-    %% Add a "section" entry to the ToC with the heading
-    %% "Quilling Shapes" and the label "sec:shapes"
-    addtotoc={1,section,1,Quilling Shapes,sec:shapes}]
-%% The pdf file itself
-{Math168_Final_Project.pdf}
 
 \end{document}
